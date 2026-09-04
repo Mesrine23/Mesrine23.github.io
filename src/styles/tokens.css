@@ -65,22 +65,40 @@
 /* The glass material. Square-cornered on purpose — the terminal keeps its geometry. */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
   box-shadow: inset 0 1px 0 var(--glass-sheen), var(--glass-drop);
 }
 
 .glass-quiet {
   background: var(--glass-quiet-bg);
-  backdrop-filter: var(--glass-blur-quiet);
-  -webkit-backdrop-filter: var(--glass-blur-quiet);
   border: 1px solid var(--glass-border-quiet);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
 }
 
-/* Browsers without backdrop-filter get an opaque panel rather than a washed-out one. */
+/* The blur is split across two @supports blocks deliberately. Written as
+   sibling declarations in one rule, the CSS minifier treats
+   -webkit-backdrop-filter and backdrop-filter as the same property and keeps
+   only whichever comes last — which once shipped a webkit-only build that
+   Chrome and Firefox rendered flat. Separate at-rules cannot be collapsed, and
+   each applies exactly where the browser reports support. Do not merge them. */
+@supports (backdrop-filter: blur(1px)) {
+  .glass       { backdrop-filter: var(--glass-blur); }
+  .glass-quiet { backdrop-filter: var(--glass-blur-quiet); }
+}
+
+@supports (-webkit-backdrop-filter: blur(1px)) {
+  .glass       { -webkit-backdrop-filter: var(--glass-blur); }
+  .glass-quiet { -webkit-backdrop-filter: var(--glass-blur-quiet); }
+}
+
+/* Neither supported (older Firefox, some Android WebViews): an opaque panel
+   rather than a washed-out translucent one. Nested rather than written as
+   `not ((a) or (b))`, because the minifier rewrites that to `not (a)` alone —
+   which would fire on Safari 15-17, painting an opaque panel over a blur that
+   is in fact working. Nesting is a plain AND and survives intact. */
 @supports not (backdrop-filter: blur(1px)) {
-  .glass       { background: #201C18; }
-  .glass-quiet { background: #1B1815; }
+  @supports not (-webkit-backdrop-filter: blur(1px)) {
+    .glass       { background: #201C18; }
+    .glass-quiet { background: #1B1815; }
+  }
 }

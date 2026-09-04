@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://mesrine23.github.io',
+
   integrations: [sitemap()],
   i18n: {
     defaultLocale: 'en',
