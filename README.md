@@ -48,6 +48,11 @@ and publishes it to GitHub Pages. Nothing to run by hand.
 
 Repository Settings → Pages → Source must be set to **GitHub Actions**.
 
+GitHub also auto-enables its own `pages-build-deployment` (Jekyll) workflow when a
+Pages repo is created. It races this one and can overwrite the deploy with a Jekyll
+render of the source tree. It is disabled on this repo; if it ever comes back, disable
+it again and re-run this workflow so it lands last.
+
 ## Design
 
 Direction "Terminal Glass": warm near-black terminal base, monospace metadata,
