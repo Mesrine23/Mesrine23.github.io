@@ -1,0 +1,22 @@
+---
+import type { Content } from '../data/types';
+interface Props { c: Content; n: number }
+const { c, n } = Astro.props;
+const pad = String(n).padStart(2, '0');
+---
+<section id="about" class="shell">
+  <div class="section reveal">
+    <h2 class="section__label">{pad} / {c.about.label}</h2>
+    <div class="about__body">
+      {c.about.paragraphs.map((p, i) => (
+        <p class={i === 0 ? 'about__lead' : 'about__rest'}>{p}</p>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__body { display: flex; flex-direction: column; gap: 1.25rem; max-width: var(--measure); }
+  .about__lead { font-size: var(--fs-body-lg); line-height: 1.62; color: var(--text-2); }
+  .about__rest { font-size: var(--fs-body-lg); line-height: 1.62; color: var(--text-3); }
+</style>

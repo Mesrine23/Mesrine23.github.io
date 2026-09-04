@@ -1,0 +1,42 @@
+---
+import type { Content } from '../data/types';
+
+interface Props { c: Content; n: number }
+const { c, n } = Astro.props;
+const pad = String(n).padStart(2, '0');
+---
+<section id="side-projects" class="shell">
+  <div class="section reveal">
+    <h2 class="section__label">{pad} / {c.side.label}</h2>
+
+    <div>
+      <p class="side__intro">{c.side.intro}</p>
+
+      <ul class="side">
+        {c.side.items.map((p) => (
+          <li class="side__item glass">
+            <h3 class="side__name">
+              {p.href ? <a href={p.href} rel="noopener">{p.name}</a> : p.name}
+            </h3>
+            <p class="side__blurb">{p.blurb}</p>
+            <p class="side__tags mono">{p.tags.join(' · ')}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .side__intro { color: var(--text-3); font-size: var(--fs-body); margin-bottom: 1.5rem; }
+  .side { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.125rem; }
+  .side__item { display: flex; flex-direction: column; padding: 1.25rem; }
+  .side__name { font-size: var(--fs-h3); margin-bottom: 0.4375rem; }
+  .side__name a { color: var(--text-strong); }
+  .side__name a:hover { color: var(--accent); }
+  .side__blurb { font-size: var(--fs-body); line-height: 1.5; color: var(--text-2); margin-bottom: 0.75rem; }
+  .side__tags { margin-top: auto; font-size: var(--fs-micro); letter-spacing: 0.04em; color: var(--text-3); }
+
+  @media (max-width: 60rem) { .side { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 44rem) { .side { grid-template-columns: minmax(0, 1fr); } }
+</style>

@@ -1,0 +1,125 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+import type { Content } from '../data/types';
+import { encodeEmail } from '../lib/email';
+
+interface Props { c: Content }
+const { c } = Astro.props;
+
+const [firstName, ...rest] = c.hero.name.split(' ');
+const emailEncoded = encodeEmail(c.footer.email);
+const lastName = rest.join(' ');
+---
+<section class="hero shell" aria-labelledby="hero-name">
+  <div class="hero__text">
+    <h1 id="hero-name" class="hero__name">
+      {firstName}<br />{lastName}
+    </h1>
+
+    <div class="hero__rule" aria-hidden="true"></div>
+
+    <p class="hero__tagline">{c.hero.tagline}</p>
+
+    <div class="hero__actions">
+      {c.hero.cvUrl && (
+        <a class="btn btn--primary mono" href={c.hero.cvUrl} download>{c.hero.cvLabel}</a>
+      )}
+      <a class="btn btn--glass glass mono" href="https://github.com/Mesrine23" rel="me noopener">
+        {c.hero.githubLabel}
+      </a>
+      <a
+        class="btn btn--glass glass mono"
+        href="https://www.linkedin.com/in/panagiotis-palamidas/"
+        rel="me noopener"
+      >
+        {c.hero.linkedinLabel}
+      </a>
+      <a class="btn btn--glass glass mono" href="#contact" data-email={emailEncoded}>
+        {c.hero.emailLabel}
+      </a>
+    </div>
+  </div>
+
+  <div class="hero__aside">
+    <div class="hero__photo glass">
+      <Image
+        src={portrait}
+        alt={c.hero.photoAlt}
+        widths={[340, 680]}
+        sizes="(max-width: 60rem) 15rem, 21rem"
+        loading="eager"
+        class="hero__img"
+      />
+      <span class="hero__bracket hero__bracket--tl" aria-hidden="true"></span>
+      <span class="hero__bracket hero__bracket--br" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 21.25rem;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+    padding-top: clamp(3rem, 8vw, 5.75rem);
+    padding-bottom: clamp(2.5rem, 5vw, 4.25rem);
+  }
+  .hero__name {
+    font-size: var(--fs-hero);
+    line-height: 0.94;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    margin-bottom: 1.875rem;
+  }
+  .hero__rule {
+    width: 6rem;
+    height: 3px;
+    background: var(--accent);
+    box-shadow: 0 0 18px 1px var(--accent);
+    margin-bottom: 1.875rem;
+  }
+  .hero__tagline {
+    font-size: var(--fs-lead);
+    line-height: 1.48;
+    color: var(--text-2);
+    max-width: 35rem;
+    margin-bottom: 2.75rem;
+  }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: 0.875rem; }
+
+
+  /* The frame owns the shape; the image just fills it. Astro's <Image> emits
+     width/height attributes, which set a used height — so aspect-ratio on the
+     <img> itself is ignored and it renders at its natural height. Sizing the
+     frame and giving the image height:100% avoids that entirely. */
+  .hero__photo {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+  }
+  .hero__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 45%;
+  }
+  .hero__bracket { position: absolute; width: 22px; height: 22px; }
+  .hero__bracket--tl {
+    left: -1px; top: -1px;
+    border-left: 2px solid var(--accent);
+    border-top: 2px solid var(--accent);
+  }
+  .hero__bracket--br {
+    right: -1px; bottom: -1px;
+    border-right: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+  }
+
+  @media (max-width: 60rem) {
+    .hero { grid-template-columns: minmax(0, 1fr); }
+    .hero__aside { order: -1; max-width: 15rem; }
+  }
+</style>

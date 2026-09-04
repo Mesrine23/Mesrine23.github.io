@@ -1,0 +1,48 @@
+---
+import type { Content } from '../data/types';
+interface Props { c: Content; n: number }
+const { c, n } = Astro.props;
+const pad = String(n).padStart(2, '0');
+---
+<section id="education" class="shell">
+  <div class="section reveal">
+    <h2 class="section__label">{pad} / {c.education.label}</h2>
+
+    <div class="edu">
+      <ul class="studies">
+        {c.education.items.map((s) => (
+          <li class="study">
+            <h3 class="study__school">{s.school}</h3>
+            <p class="study__degree">{s.degree}</p>
+            <p class="study__period mono">{s.period}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h3 class="edu__sub mono">{c.education.languagesLabel}</h3>
+      <ul class="langs">
+        {c.education.languages.map((l) => <li class="chip glass-quiet mono">{l}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .edu { max-width: 52rem; }
+  .studies { display: flex; flex-direction: column; gap: 1.25rem; }
+  .study__school { font-size: var(--fs-h3); }
+  .study__degree { font-size: var(--fs-body); color: var(--text-2); margin-top: 0.3125rem; }
+  .study__period { font-size: var(--fs-2xs); color: var(--text-3); letter-spacing: 0.04em; margin-top: 0.3125rem; }
+
+  .edu__sub {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-size: var(--fs-2xs);
+    letter-spacing: 0.12em;
+    color: var(--text-2);
+    font-weight: 500;
+  }
+  .langs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .chip { padding: 0.4375rem 0.75rem; font-size: var(--fs-2xs); color: var(--text-2); }
+
+</style>

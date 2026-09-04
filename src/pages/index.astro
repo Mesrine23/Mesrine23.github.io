@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteNav from '../components/SiteNav.astro';
+import Hero from '../components/Hero.astro';
+import Facts from '../components/Facts.astro';
+import About from '../components/About.astro';
+import Work from '../components/Work.astro';
+import OpenSource from '../components/OpenSource.astro';
+import SideProjects from '../components/SideProjects.astro';
+import Experience from '../components/Experience.astro';
+import Education from '../components/Education.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { content } from '../data';
+
+const locale = 'en' as const;
+const c = content[locale];
+
+// Section numbers are assigned here so a hidden section (Side Projects, while
+// nothing is released) does not leave a gap in the sequence.
+const showSide = c.side.items.length > 0;
+let i = 0;
+const nAbout = ++i;
+const nWork = ++i;
+const nOpenSource = ++i;
+const nSide = showSide ? ++i : 0;
+const nExperience = ++i;
+const nEducation = ++i;
+---
+<Base c={c} locale={locale}>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <SiteNav c={c} locale={locale} />
+  <main id="main">
+    <Hero c={c} />
+    <Facts c={c} />
+    <About c={c} n={nAbout} />
+    <Work c={c} n={nWork} />
+    <OpenSource c={c} n={nOpenSource} />
+    {showSide && <SideProjects c={c} n={nSide} />}
+    <Experience c={c} n={nExperience} />
+    <Education c={c} n={nEducation} />
+  </main>
+  <SiteFooter c={c} />
+</Base>

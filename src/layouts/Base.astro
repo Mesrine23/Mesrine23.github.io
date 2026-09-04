@@ -1,0 +1,123 @@
+---
+import type { Content } from '../data/types';
+import type { Locale } from '../data';
+import '../styles/global.css';
+import '../styles/print.css';
+
+interface Props {
+  c: Content;
+  locale: Locale;
+}
+const { c, locale } = Astro.props;
+
+const site = Astro.site ?? new URL('https://mesrine23.github.io');
+const canonical = new URL(locale === 'en' ? '/' : `/${locale}/`, site).href;
+const ogImage = new URL('/og.png', site).href;
+
+// Only publish contact details that have actually been filled in.
+const sameAs = c.footer.links.map((l) => l.href);
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Panagiotis Palamidas',
+  jobTitle: 'iOS Software Engineer',
+  url: canonical,
+  address: { '@type': 'PostalAddress', addressLocality: 'Athens', addressCountry: 'GR' },
+  worksFor: { '@type': 'Organization', name: 'Silvare' },
+  knowsAbout: ['iOS', 'Swift', 'SwiftUI', 'UIKit', 'Swift Concurrency', 'MVVM', 'Software Architecture'],
+  sameAs,
+  // deliberately no `email` here: structured data is machine-readable by design,
+  // which is exactly what we are keeping the address out of
+};
+
+// Escaping `<` stops any future content value containing `</script>` from
+// breaking out of the JSON-LD block.
+const personLdJson = JSON.stringify(personLd).replace(/</g, '\\u003c');
+---
+<!doctype html>
+<html lang={c.meta.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{c.meta.title}</title>
+    <meta name="description" content={c.meta.description} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="alternate" hreflang="en" href={new URL('/', site).href} />
+    <link rel="alternate" hreflang="el" href={new URL('/el/', site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/', site).href} />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={c.meta.title} />
+    <meta property="og:description" content={c.meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={locale === 'en' ? 'en_GB' : 'el_GR'} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="theme-color" content="#14120F" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Schibsted+Grotesk:wght@400;500;700;900&display=swap"
+    />
+
+    <script is:inline type="application/ld+json" set:html={personLdJson} />
+
+    <!-- Set before paint: scroll-reveal only hides content when JS can un-hide it. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+
+  <body>
+    <div class="field" aria-hidden="true"></div>
+    <slot />
+
+    <script>
+      // Reveal-on-scroll. Three guarantees, in order of importance:
+      //  1. Without JS the content is visible (the `js` class is never set).
+      //  2. With reduced motion, everything reveals immediately.
+      //  3. If IntersectionObserver never fires — a background tab whose
+      //     rendering is suspended, an observer that is throttled — a timer
+      //     reveals everything anyway. Content is never permanently hidden.
+      // Assemble mailto: hrefs from their base64 form (see EmailLink.astro).
+      document.querySelectorAll('a[data-email]').forEach((el) => {
+        const encoded = el.getAttribute('data-email');
+        if (!encoded) return;
+        try {
+          el.setAttribute('href', 'mailto:' + atob(encoded));
+        } catch (e) { /* leave the #contact fallback in place */ }
+      });
+
+      const targets = Array.from(document.querySelectorAll('.reveal'));
+      const revealAll = () => targets.forEach((el) => el.classList.add('is-in'));
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduced || !('IntersectionObserver' in window)) {
+        revealAll();
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-in');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+        );
+        targets.forEach((el) => io.observe(el));
+
+        // Safety net: whatever happens above, nothing stays invisible.
+        window.setTimeout(() => {
+          revealAll();
+          io.disconnect();
+        }, 2000);
+      }
+    </script>
+  </body>
+</html>

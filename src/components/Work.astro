@@ -1,0 +1,59 @@
+---
+import type { Content } from '../data/types';
+interface Props { c: Content; n: number }
+const { c, n } = Astro.props;
+const pad = String(n).padStart(2, '0');
+---
+<section id="work" class="shell">
+  <div class="section reveal">
+    <h2 class="section__label">{pad} / {c.work.label}</h2>
+
+    <div>
+      <ul class="apps">
+        {c.work.apps.map((a) => (
+          <li class="app glass">
+            <p class="app__client mono">{a.client}</p>
+            <h3 class="app__name">{a.name}</h3>
+            <p class="app__role mono">{a.role}</p>
+          </li>
+        ))}
+      </ul>
+
+    </div>
+  </div>
+</section>
+
+<style>
+
+  .apps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.875rem;
+  }
+  .app {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    transition: transform 0.2s var(--ease);
+  }
+  .app:hover { transform: translateY(-2px); }
+  .app__client {
+    font-size: var(--fs-micro);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.625rem;
+  }
+  .app__name { font-size: var(--fs-h3); margin-bottom: 0.4375rem; }
+  .app__role {
+    margin-top: auto;
+    font-size: var(--fs-micro);
+    letter-spacing: 0.04em;
+    color: var(--text-3);
+  }
+
+
+
+  @media (max-width: 75rem) { .apps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 44rem) { .apps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

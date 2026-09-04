@@ -1,0 +1,103 @@
+---
+import type { Content } from '../data/types';
+import type { Locale } from '../data';
+import { homeFor } from '../data';
+
+interface Props { c: Content; locale: Locale }
+const { c, locale } = Astro.props;
+
+const items = [
+  { href: '#about',       label: c.nav.about },
+  { href: '#work',        label: c.nav.work },
+  { href: '#open-source', label: c.nav.openSource },
+  ...(c.side.items.length ? [{ href: '#side-projects', label: c.nav.side }] : []),
+  { href: '#experience',  label: c.nav.experience },
+  { href: '#contact',     label: c.nav.contact },
+];
+---
+<header class="site-nav glass-quiet">
+  <div class="site-nav__inner shell">
+    <a class="site-nav__brand mono" href={homeFor(locale)}>
+      <span class="site-nav__dot" aria-hidden="true"></span>
+      <span>~/palamidas</span>
+    </a>
+
+    <nav class="site-nav__links mono">
+      {items.map((i) => <a href={i.href}>{i.label}</a>)}
+    </nav>
+
+    <div class="site-nav__lang mono">
+      <a href="/"    aria-current={locale === 'en' ? 'page' : undefined} hreflang="en" lang="en">EN</a>
+      <a href="/el/" aria-current={locale === 'el' ? 'page' : undefined} hreflang="el" lang="el">ΕΛ</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+  }
+  .site-nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 3.75rem;
+    padding-block: 0.5rem;
+  }
+  .site-nav__brand {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;      /* 44px hit target */
+    gap: 0.625rem;
+    font-size: var(--fs-xs);
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .site-nav__brand:hover { color: var(--text-strong); }
+  .site-nav__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px 2px var(--accent);
+    flex-shrink: 0;
+  }
+  .site-nav__links {
+    display: flex;
+    gap: clamp(1rem, 2.4vw, 2.125rem);
+    font-size: var(--fs-xs);
+  }
+  .site-nav__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;      /* 44px hit target */
+    color: var(--text-2);
+  }
+  .site-nav__links a:hover { color: var(--text-strong); }
+  .site-nav__lang {
+    display: flex;
+    gap: 0.25rem;
+    font-size: var(--fs-xs);
+  }
+  .site-nav__lang a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;      /* 44px hit target — on phones this is the only nav control */
+    padding-inline: 0.625rem;
+    color: var(--text-3);
+  }
+  .site-nav__lang a:hover { color: var(--text-strong); }
+  .site-nav__lang a[aria-current='page'] { color: var(--text-strong); }
+
+  /* Below the fold on phones the link row would crowd the brand; drop it and
+     keep the language switch, which is the one control with no other home. */
+  @media (max-width: 52rem) {
+    .site-nav__links { display: none; }
+  }
+</style>

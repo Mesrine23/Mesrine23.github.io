@@ -1,0 +1,73 @@
+/* Print: the screen design is dark and glassy; paper gets ink on white.
+   Recruiters do print these — this is not a throwaway. */
+@media print {
+  @page { margin: 14mm; }
+
+  :root {
+    --bg: #FFFFFF;
+    --text: #000000;
+    --text-strong: #000000;
+    --text-2: #1F1F1F;
+    --text-3: #4A4A4A;
+    --rule: #BFBFBF;
+    --rule-soft: #D9D9D9;
+    --accent: #B3350F;      /* the orange, darkened so it survives greyscale */
+    --accent-ink: #FFFFFF;
+  }
+
+  html, body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 10.5pt;
+    line-height: 1.45;
+  }
+
+  /* chrome and decoration carry nothing on paper */
+  .field,
+  .site-nav,
+  .skip-link,
+  .hero__actions,
+  .to-top { display: none !important; }
+
+  /* glass has no meaning in print — flatten it to a hairline box */
+  .glass, .glass-quiet {
+    background: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid var(--rule) !important;
+    box-shadow: none !important;
+  }
+
+  .js .reveal, .js .reveal.is-in { opacity: 1 !important; transform: none !important; }
+
+  a { color: #000000 !important; text-decoration: underline; }
+  /* spell out where links actually go */
+  .print-url::after {
+    content: ' (' attr(href) ')';
+    font-size: 8.5pt;
+    color: #4A4A4A;
+    word-break: break-all;
+  }
+
+  .section {
+    padding-top: 10pt;
+    gap: 10pt;
+    grid-template-columns: 110px minmax(0, 1fr);
+    break-inside: avoid;
+  }
+  .section__label { color: #000000 !important; font-weight: 700; }
+
+  h1 { font-size: 22pt; }
+  h2 { font-size: 13pt; }
+  h3 { font-size: 11pt; }
+
+  .hero { padding-top: 0 !important; }
+  .hero__photo { max-width: 32mm; }
+
+  .role, .app, .study, .foot__top { break-inside: avoid; }
+  .apps { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  /* the email button is a JS-assembled link; print the readable form instead */
+  .foot__fallback { display: block !important; }
+
+  .code-panel { break-inside: avoid; font-size: 8.5pt; }
+}

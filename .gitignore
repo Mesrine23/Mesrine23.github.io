@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+.astro/
+
+# environment
+.env
+.env.production
+
+# macOS
+.DS_Store
+
+# editor
+.vscode/
+.idea/
+
+# logs
+npm-debug.log*
+
+# design direction sketches (decision tool, not shipped)
+design-canvas/
