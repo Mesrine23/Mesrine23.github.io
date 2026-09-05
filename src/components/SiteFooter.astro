@@ -21,7 +21,7 @@ const fallback = humanEmail(f.email);
       <ul class="foot__links mono">
         <li><a class="foot__link" href="#contact" data-email={emailEncoded}>{f.emailLabel}</a></li>
         {f.links.map((l) => (
-          <li><a class="foot__link print-url" href={l.href} rel="me noopener">{l.label}</a></li>
+          <li><a class="foot__link print-url" href={l.href} target="_blank" rel="me noopener noreferrer">{l.label}</a></li>
         ))}
       </ul>
     </div>

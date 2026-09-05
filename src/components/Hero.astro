@@ -25,13 +25,14 @@ const lastName = rest.join(' ');
       {c.hero.cvUrl && (
         <a class="btn btn--primary mono" href={c.hero.cvUrl} download>{c.hero.cvLabel}</a>
       )}
-      <a class="btn btn--glass glass mono" href="https://github.com/Mesrine23" rel="me noopener">
+      <a class="btn btn--glass glass mono" href="https://github.com/Mesrine23" target="_blank" rel="me noopener noreferrer">
         {c.hero.githubLabel}
       </a>
       <a
         class="btn btn--glass glass mono"
         href="https://www.linkedin.com/in/panagiotis-palamidas/"
-        rel="me noopener"
+        target="_blank"
+        rel="me noopener noreferrer"
       >
         {c.hero.linkedinLabel}
       </a>

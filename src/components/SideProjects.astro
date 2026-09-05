@@ -16,7 +16,7 @@ const pad = String(n).padStart(2, '0');
         {c.side.items.map((p) => (
           <li class="side__item glass">
             <h3 class="side__name">
-              {p.href ? <a href={p.href} rel="noopener">{p.name}</a> : p.name}
+              {p.href ? <a href={p.href} target="_blank" rel="noopener noreferrer">{p.name}</a> : p.name}
             </h3>
             <p class="side__blurb">{p.blurb}</p>
             <p class="side__tags mono">{p.tags.join(' · ')}</p>
