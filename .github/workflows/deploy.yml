@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -38,10 +38,14 @@ jobs:
       - name: Build
         run: npm run build
 
+      # `include-hidden-files` restores the pre-v4 behaviour: without it the
+      # action excludes dotfiles, which would drop `.nojekyll` and let Jekyll
+      # strip the `_astro/` build directory if it ever gets a say.
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
+          include-hidden-files: true
 
   deploy:
     needs: build
