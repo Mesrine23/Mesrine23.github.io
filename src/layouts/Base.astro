@@ -12,7 +12,9 @@ const { c, locale } = Astro.props;
 
 const site = Astro.site ?? new URL('https://mesrine23.github.io');
 const canonical = new URL(locale === 'en' ? '/' : `/${locale}/`, site).href;
-const ogImage = new URL('/og.png', site).href;
+// A JPEG, not a PNG: with the photo and the ember gradient a PNG came out at
+// 470 KB, and WhatsApp skips preview images much over 300 KB.
+const ogImage = new URL('/og.jpg', site).href;
 
 // Only publish contact details that have actually been filled in.
 const sameAs = c.footer.links.map((l) => l.href);
@@ -53,6 +55,11 @@ const personLdJson = JSON.stringify(personLd).replace(/</g, '\\u003c');
     <meta property="og:description" content={c.meta.description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <!-- Declared size lets LinkedIn and Facebook lay out the preview on the
+         first share, before they have fetched the image itself. -->
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={c.meta.title} />
     <meta property="og:locale" content={locale === 'en' ? 'en_GB' : 'el_GR'} />
     <meta name="twitter:card" content="summary_large_image" />
 
