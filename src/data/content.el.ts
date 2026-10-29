@@ -1,4 +1,7 @@
 import type { Content } from './types';
+import apiciusIcon from '../assets/apicius/icon.png';
+import apiciusRecipes from '../assets/apicius/recipes.jpg';
+import apiciusRecipeDark from '../assets/apicius/recipe-dark.jpg';
 
 /**
  * GREEK CONTENT — my draft, for Panagiotis to correct. Same shape as content.en.ts.
@@ -64,11 +67,33 @@ export const el: Content = {
     ],
   },
 
-  // Empty on purpose: the repos are private and nothing is released yet.
   side: {
     label: 'ΠΡΟΣΩΠΙΚΑ ΕΡΓΑ',
-    intro: 'Φτιαγμένα για μένα, από την αρχή ως το τέλος.',
-    items: [],
+    intro: 'Σχεδιασμένα, χτισμένα και δημοσιευμένα από μένα.',
+    items: [
+      {
+        name: 'Apicius',
+        blurb:
+          'Ένα ζεστό, ιδιωτικό σπίτι για τις οικογενειακές συνταγές: άλλαξε μερίδες, οργάνωσε την εβδομάδα και φτιάξε από αυτήν μία λίστα για ψώνια.',
+        tags: ['Δωρεάν', 'iPhone', 'iOS 18+', 'Ελληνικά & Αγγλικά'],
+        app: {
+          storeUrl: 'https://apps.apple.com/app/id6811885234',
+          storeLabel: 'ΔΕΣ ΤΟ ΣΤΟ APP STORE',
+          icon: apiciusIcon,
+          // Only English screenshots exist, so both pages show the English UI.
+          screenshots: [
+            { src: apiciusRecipes,    alt: 'Η λίστα συνταγών του Apicius σε φωτεινή εμφάνιση' },
+            { src: apiciusRecipeDark, alt: 'Μια συνταγή σε σκοτεινή εμφάνιση, με την αλλαγή μερίδων' },
+          ],
+          highlights: [
+            { name: 'SwiftUI · Swift 6',    note: 'Domain και data σε ξεχωριστά SPM packages.' },
+            { name: 'SwiftData + CloudKit', note: 'Local-first, με συγχρονισμό iCloud κατ’ επιλογή.' },
+            { name: 'pal-mvvm-foundation',  note: 'Χτισμένο πάνω στο open-source θεμέλιό μου.' },
+            { name: 'Ιδιωτικότητα',         note: 'Χωρίς λογαριασμό, διαφημίσεις και tracking.' },
+          ],
+        },
+      },
+    ],
   },
 
   openSource: {
@@ -102,7 +127,7 @@ export const el: Content = {
         period: '02/2026 — Σήμερα',
         location: 'Αθήνα, GR',
         summary:
-          'Ανάπτυξη και συντήρηση λειτουργιών στην εφαρμογή της Eurobank, ένα από τα μεγαλύτερα καταναλωτικά τραπεζικά προϊόντα στην Ελλάδα. Κυρίως SwiftUI, παραλάλληλα με τα εκτενή υπάρχοντα επίπεδα UIKit, σε μεγάλο codebase και σε συνεργασία πολλές ομάδες.',
+          'Ανάπτυξη και συντήρηση λειτουργιών στην εφαρμογή της Eurobank, ένα από τα μεγαλύτερα καταναλωτικά τραπεζικά προϊόντα στην Ελλάδα. Κυρίως SwiftUI, παράλληλα με τα εκτενή υπάρχοντα επίπεδα UIKit, σε μεγάλο codebase και σε συνεργασία με πολλές ομάδες.',
         bullets: [],
       },
       {
@@ -151,6 +176,6 @@ export const el: Content = {
       { label: 'GitHub',   href: 'https://github.com/Mesrine23' },
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/panagiotis-palamidas/' },
     ],
-    updated: 'Ενημερώθηκε Σεπτέμβριος 2026',
+    updated: 'Ενημερώθηκε Οκτώβριος 2026',
   },
 };

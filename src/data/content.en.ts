@@ -1,4 +1,7 @@
 import type { Content } from './types';
+import apiciusIcon from '../assets/apicius/icon.png';
+import apiciusRecipes from '../assets/apicius/recipes.jpg';
+import apiciusRecipeDark from '../assets/apicius/recipe-dark.jpg';
 
 /**
  * ENGLISH CONTENT — edit this file to change the site. No markup here, just facts.
@@ -67,12 +70,33 @@ export const en: Content = {
     ],
   },
 
-  // Empty on purpose: the repos are private and nothing is released yet, so the
-  // whole section stays hidden. Add entries here after the first release.
   side: {
     label: 'SIDE PROJECTS',
-    intro: 'Built for myself, end to end.',
-    items: [],
+    intro: 'Designed, built and shipped on my own.',
+    items: [
+      {
+        name: 'Apicius',
+        blurb:
+          'A warm, private home for family recipes: scale the servings, plan the week, and turn it into one shopping list.',
+        tags: ['Free', 'iPhone', 'iOS 18+', 'English & Greek'],
+        app: {
+          // No storefront in the path, so each visitor lands on their own country's store.
+          storeUrl: 'https://apps.apple.com/app/id6811885234',
+          storeLabel: 'VIEW ON THE APP STORE',
+          icon: apiciusIcon,
+          screenshots: [
+            { src: apiciusRecipes,    alt: 'Apicius recipe list in light mode' },
+            { src: apiciusRecipeDark, alt: 'A recipe in dark mode, with the servings scaler' },
+          ],
+          highlights: [
+            { name: 'SwiftUI · Swift 6',    note: 'Domain and data as separate SPM packages.' },
+            { name: 'SwiftData + CloudKit', note: 'Local-first. iCloud sync is opt-in.' },
+            { name: 'pal-mvvm-foundation',  note: 'Built on my open-source foundation.' },
+            { name: 'Private by design',    note: 'No account, no ads, no tracking.' },
+          ],
+        },
+      },
+    ],
   },
 
   openSource: {
@@ -155,6 +179,6 @@ export const en: Content = {
       { label: 'GitHub',   href: 'https://github.com/Mesrine23' },
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/panagiotis-palamidas/' },
     ],
-    updated: 'Updated September 2026',
+    updated: 'Updated October 2026',
   },
 };

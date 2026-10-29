@@ -41,9 +41,11 @@
   .js .reveal, .js .reveal.is-in { opacity: 1 !important; transform: none !important; }
 
   a { color: #000000 !important; text-decoration: underline; }
-  /* spell out where links actually go */
+  /* spell out where links actually go. The space is a no-break space because
+     these links are inline-flex, and a flex item drops a plain leading space —
+     which printed "GitHub(https://…)". */
   .print-url::after {
-    content: ' (' attr(href) ')';
+    content: '\00a0(' attr(href) ')';
     font-size: 8.5pt;
     color: #4A4A4A;
     word-break: break-all;
@@ -65,9 +67,23 @@
   .hero__photo { max-width: 32mm; }
 
   .role, .app, .study, .foot__top { break-inside: avoid; }
+  /* Experience is the longest section; kept whole it strands half a page of
+     white above it. Each role still stays in one piece. */
+  #experience .section { break-inside: auto; }
   .apps { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
   /* the email button is a JS-assembled link; print the readable form instead */
   .foot__fallback { display: block !important; }
 
   .code-panel { break-inside: avoid; font-size: 8.5pt; }
+
+  /* an app's screenshots are for screens; on paper its store link prints as a
+     plain URL instead of a button */
+  .side-app { display: block !important; break-inside: avoid; }
+  .side-app__shots { display: none !important; }
+  .side-app__icon { width: 12mm !important; height: 12mm !important; box-shadow: none !important; }
+  .side-app__cta {
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
 }

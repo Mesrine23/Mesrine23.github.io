@@ -7,6 +7,8 @@
  * plausible guess. Search the content files for "[" to find what is outstanding.
  */
 
+import type { ImageMetadata } from 'astro';
+
 export interface NavLabels {
   about: string;
   work: string;
@@ -33,11 +35,28 @@ export interface App {
   role: string;
 }
 
+export interface Screenshot {
+  src: ImageMetadata;
+  alt: string;
+}
+
+/** What a released app adds to a side project: where to get it, its icon,
+    a couple of screenshots and the engineering worth calling out. */
+export interface AppListing {
+  storeUrl: string;
+  storeLabel: string;
+  icon: ImageMetadata;
+  screenshots: Screenshot[];
+  highlights: Product[];
+}
+
+/** With `app` set, the project renders as a full-width feature instead of a card. */
 export interface SideProject {
   name: string;
   blurb: string;
   tags: string[];
   href?: string;
+  app?: AppListing;
 }
 
 export interface Role {
